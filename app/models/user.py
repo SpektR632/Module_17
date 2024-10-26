@@ -1,8 +1,9 @@
-from sqlalchemy.schema import CreateTable
 
 from app.backend.db import Base
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+
 
 
 class User(Base):
@@ -17,4 +18,10 @@ class User(Base):
 
 
 
-print(CreateTable(User.__table__))
+
+
+
+
+
+
+
