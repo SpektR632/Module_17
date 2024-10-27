@@ -55,6 +55,7 @@ async def update_user(db: Annotated[Session, Depends(get_db)], update_user: Upda
         lastname=update_user.lastname,
         age=update_user.age
     ))
+    db.commit()
     return {
         'status_code': status.HTTP_200_OK,
         'transaction': 'User update is successful'
