@@ -3,9 +3,9 @@ from app.backend.db_depends import get_db
 from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import Session
 from typing import Annotated
-from app.models import User
+from app.models import User, Task
 from app.schemas import CreateUser, UpdateUser
-from slugify import slugify
+
 
 rout = APIRouter(prefix='/user', tags=['user'])
 
@@ -24,6 +24,12 @@ async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail='User was not found'
         )
+
+
+@rout.get('/user_id/tasks')
+async def tasks_by_user_id(db: Annotated[Session, Depends(get_db)], user_id: int):
+    tasks_user = db.scalars(select(Task).where(Task.user_id == user_id))
+    return tasks_user
 
 
 @rout.post('/create')
@@ -71,6 +77,7 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
             detail='User was not found'
         )
     db.execute(delete(User).where(User.id == user_id))
+    db.execute(delete(Task).where(Task.user_id == user_id))
     db.commit()
     return {
         'status_code': status.HTTP_200_OK,
