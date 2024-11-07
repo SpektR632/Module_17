@@ -17,7 +17,7 @@ async def all_tasks(db: Annotated[Session, Depends(get_db)]):
 
 @router.get('/task_id')
 async def task_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
-    task = db.scalars(select(Task).where(Task.id == user_id))
+    task = db.scalar(select(Task).where(Task.id == user_id))
     if task is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -27,7 +27,7 @@ async def task_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
 
 @router.post('/create')
 async def create_task(db: Annotated[Session, Depends(get_db)], create_task: CreateTask, user_id: int):
-    user = db.scalars(select(User).where(User.id == user_id))
+    user = db.scalar(select(User).where(User.id == user_id))
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -47,7 +47,7 @@ async def create_task(db: Annotated[Session, Depends(get_db)], create_task: Crea
 
 @router.put('/update')
 async def update_task(db: Annotated[Session, Depends(get_db)], update_user: UpdateTask, user_id: int):
-    user = db.scalars(select(Task).where(Task.user_id == user_id))
+    user = db.scalar(select(Task).where(Task.user_id == user_id))
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -67,7 +67,7 @@ async def update_task(db: Annotated[Session, Depends(get_db)], update_user: Upda
 
 @router.delete('/delete')
 async def delete_task(db: Annotated[Session, Depends(get_db)], id: int):
-    user = db.scalars(select(Task).where(Task.id == id))
+    user = db.scalar(select(Task).where(Task.id == id))
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
